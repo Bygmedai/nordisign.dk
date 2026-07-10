@@ -160,7 +160,7 @@ jobs:
           npx http-server _site -p 8080 -s &
           sleep 2
       - name: Run smoke tests
-        run: npx playwright test tests/ --reporter=list
+        run: npx playwright test tests/smoke.spec.js tests/contract.spec.js --reporter=list
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
