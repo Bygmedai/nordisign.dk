@@ -42,12 +42,13 @@ test('Forside nav-links er ikke brudte', async ({ page }) => {
   }
 });
 
-// ── 4. Kontaktformular: har action-attribut (critical flow: kontakt-formular) ─
+// ── 4. Kontakt-CTA: siden bruger bevidst mailto-link, ikke formular ──────────
+// (critical flow: brugeren kan kontakte — designbeslutning: mailto, se src/kontakt.njk)
 
-test('Kontakt-side har formular med action-attribut', async ({ page }) => {
+test('Kontakt-side har mailto-CTA', async ({ page }) => {
   await page.goto(`${BASE_URL}/kontakt/`);
-  const form = page.locator('form');
-  await expect(form).toBeVisible();
-  const action = await form.getAttribute('action');
-  expect(action, 'Formular mangler action-attribut').toBeTruthy();
+  const cta = page.locator('a[href^="mailto:"]').first();
+  await expect(cta).toBeVisible();
+  const href = await cta.getAttribute('href');
+  expect(href, 'mailto-link mangler adresse').toMatch(/^mailto:.+@.+/);
 });
